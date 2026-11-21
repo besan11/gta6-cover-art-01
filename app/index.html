@@ -3,21 +3,95 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
-<link rel="stylesheet" href="./style.css">
+<title>Vice Cover Studio — smart-focus multi-panel covers</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
+<header class="masthead">
+  <div>
+    <h1>VICE COVER STUDIO</h1>
+    <p class="tagline">Turn any photo into a Neon Bay poster cover. Smart-focus crop, three panels, four grades, three post sizes.</p>
+  </div>
+  <div class="masthead-badge">NEON BAY &middot; EST 2026</div>
+</header>
+
+<main class="workbench">
+  <section class="controls" aria-label="Cover controls">
+    <div class="group">
+      <h2>1 &middot; Photos</h2>
+      <label class="upload" for="photoFiles">Add your photos&hellip;
+        <input id="photoFiles" type="file" accept="image/*" multiple>
+      </label>
+      <p class="hint">Or try a sample:</p>
+      <div class="row">
+        <button type="button" class="chip" data-sample="boulevard.jpg">Boulevard</button>
+        <button type="button" class="chip" data-sample="pier.jpg">Pier</button>
+      </div>
+      <div id="photoTray" class="tray" aria-label="Loaded photos"></div>
+      <p class="hint">Click a loaded photo, then click a panel slot below to put it there. One photo can fill several panels.</p>
+    </div>
+
+    <div class="group">
+      <h2>2 &middot; Layout</h2>
+      <div class="row" id="layoutRow">
+        <button type="button" class="chip" data-layout="hero" aria-pressed="true">Hero + duo</button>
+        <button type="button" class="chip" data-layout="triptych" aria-pressed="false">Triptych</button>
+        <button type="button" class="chip" data-layout="duo" aria-pressed="false">Duo strip</button>
+      </div>
+      <h2>3 &middot; Grade</h2>
+      <div class="row" id="gradeRow">
+        <button type="button" class="chip" data-grade="sunset" aria-pressed="true">Sunset</button>
+        <button type="button" class="chip" data-grade="neon" aria-pressed="false">Neon</button>
+        <button type="button" class="chip" data-grade="night" aria-pressed="false">Vice night</button>
+        <button type="button" class="chip" data-grade="mono" aria-pressed="false">Mono</button>
+      </div>
+      <label class="slider-label" for="gradeStrength">Grade strength <span id="gradeStrengthValue">70%</span></label>
+      <input id="gradeStrength" type="range" min="0" max="100" value="70">
+    </div>
+
+    <div class="group">
+      <h2>4 &middot; Caption</h2>
+      <label>Cover title <input id="titleText" type="text" value="NEON BAY" maxlength="24"></label>
+      <label>Tagline <input id="taglineText" type="text" value="Every sunset hides a score." maxlength="60"></label>
+      <label>Starring <input id="starringText" type="text" value="J. MARLOWE" maxlength="24"></label>
+      <label>Review quote <input id="quoteText" type="text" value="The most stylish cover maker on the strip." maxlength="80"></label>
+      <label>Review source <input id="sourceText" type="text" value="VICE WEEKLY" maxlength="24"></label>
+    </div>
+
+    <div class="group">
+      <h2>5 &middot; Panels</h2>
+      <div id="panelSlots"></div>
+      <p class="hint">Click a panel in the preview to select it, drag it to reposition the photo, scroll over it to zoom. Smart-focus already centres each photo on its brightest, busiest point.</p>
+      <label class="slider-label" for="panelZoom">Selected panel zoom <span id="panelZoomValue">1.00&times;</span></label>
+      <input id="panelZoom" type="range" min="100" max="250" value="100">
+      <div class="row">
+        <button type="button" class="chip" id="recenterBtn">Recentre photo</button>
+        <button type="button" class="chip" id="refocusBtn">Re-run smart-focus</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>6 &middot; Export</h2>
+      <div class="row" id="sizeRow">
+        <button type="button" class="chip" data-size="1080x1080" aria-pressed="false">1080 &times; 1080</button>
+        <button type="button" class="chip" data-size="1080x1350" aria-pressed="false">1080 &times; 1350</button>
+        <button type="button" class="chip" data-size="1920x1080" aria-pressed="true">1920 &times; 1080</button>
+      </div>
+      <button type="button" class="export" id="exportBtn">Export PNG</button>
+      <p class="hint" id="exportStatus">Preview and export use the same renderer, so the PNG is exactly what you see.</p>
+    </div>
   </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
+
+  <section class="stage-wrap" aria-label="Live preview">
+    <canvas id="stage" width="960" height="540"></canvas>
+    <p class="hint stage-hint">Live preview &mdash; drag a panel to move its photo, scroll to zoom. The exported PNG matches this frame pixel for pixel at full size.</p>
+  </section>
 </main>
-<script type="module" src="./src/main.js"></script>
+
+<footer class="footnote">
+  <p>Vice Cover Studio is an original design. Neon Bay is a fictional city. No Rockstar Games logo, artwork, character or font is used. Photos stay on your machine; nothing is uploaded. Sample photos were made with an image model and are free to use.</p>
+</footer>
+
+<script src="src/studio.js"></script>
 </body>
 </html>
