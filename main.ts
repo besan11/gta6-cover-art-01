@@ -1,8 +1,9 @@
 // Vice Cover Studio — entry program (Node 22, standard library only).
 //
 // What it does, in order:
-//   1. Wipes the output directory and rebuilds it from scratch, so a run
-//      never inherits stale files from an earlier one.
+//   1. Empties the output directory's contents (never the directory
+//      itself, which in the grader is a bind mount) and rebuilds it
+//      from scratch, so a run never inherits stale files.
 //   2. Copies app/ and screenshots/ from beside this file into it.
 //   3. Writes dossier.json with the vendored make.fun library, using the
 //      same caps the scorer enforces, so a dossier that passes here is
@@ -49,9 +50,15 @@ function totalBytes(files: string[]): number {
 const repoRoot = fileURLToPath(new URL('.', import.meta.url));
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
-// 1. Fresh output directory.
-rmSync(outDir, { recursive: true, force: true });
+// 1. Fresh output directory: remove only what is inside it, one entry
+//    at a time, and leave the directory itself standing. In the grader
+//    the output directory is a bind mount under a read-only filesystem,
+//    so removing the mount point itself fails with "Device or resource
+//    busy" — emptying its contents does not.
 mkdirSync(outDir, { recursive: true });
+for (const entry of readdirSync(outDir)) {
+  rmSync(join(outDir, entry), { recursive: true, force: true });
+}
 
 // 2. Copy the app and its screenshots.
 cpSync(join(repoRoot, 'app'), join(outDir, 'app'), { recursive: true });

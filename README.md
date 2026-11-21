@@ -34,5 +34,6 @@ mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 - Original design; Neon Bay is fictional. No Rockstar Games logo, artwork, character or font is used, and only system fonts are loaded.
 - Photos are read on your machine and never uploaded. The two sample photos were made with an image model and are free to use.
 - See `NOTES.md` for the engineering decisions, the two bugs the first build taught us, and what is still rough.
+- Built for the [GTA 6 Cover Art bounty](https://make.fun/bounty/gta6-cover-art-01) on make.fun.
 
 Referral code: `jpgk45b3`
